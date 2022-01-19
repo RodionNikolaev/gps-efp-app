@@ -1,0 +1,55 @@
+body {
+  margin: 0;
+}
+
+.info {
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  padding: 5px;
+  z-index: 1000;
+  background: #41b6e7;
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 45px;
+  display: none;
+  font-weight: bold;
+
+  &.ready {
+    display: unset;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  td {
+    color: white;
+    font-size: 18px;
+  }
+
+  .first {
+    text-align: left;
+  }
+
+  .second {
+    text-align: right;
+  }
+}
+
+.gps-logo {
+  fill: #41b6e7;
+  width: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  animation: blinker 3s linear infinite;
+
+  @keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+  }
+}
