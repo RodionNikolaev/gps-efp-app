@@ -172,7 +172,7 @@ function updadeCurrentPosition(coords) {
     let left_meters = left_pixels * full_gps_distance / full_svg_length;
     let left_km = left_meters ? (round(left_meters / 1000, 2) + " km") : "--";
 
-    let speed_meters = coords.speed;
+    let speed_meters = coords.speed > 0.5 ? coords.speed : 0;
     let speed_km = speed_meters ? (round(speed_meters * 3.6, 1) + " km/h") : "--";
 
     let left_time = left_pixels && speed_meters ? formatSeconds(left_meters / speed_meters) : "--";
