@@ -1,15 +1,30 @@
-navigator.geolocation.watchPosition((pos) => {
-    try {
-        updadeCurrentPosition(pos.coords);
-    }
-    catch (e) {
-        console.error(e);
-    }
-}, (err) => {
-    console.error(err);
-}, {
-    enableHighAccuracy: true
-});
+let watcher = null;
+
+function startGps() {
+    watcher = navigator.geolocation.watchPosition((pos) => {
+
+        console.info(pos);
+        try {
+            updadeCurrentPosition(pos.coords);
+        }
+        catch (e) {
+            console.error(e);
+        }
+
+
+    }, (err) => {
+        console.error(err);
+        if (watcher) navigator.geolocation.clearWatch(watcher);
+        setTimeout(() => startGps(), 5000);
+    }, {
+        maximumAge: 0,
+        enableHighAccuracy: true,
+        timeout: 10000
+    })
+}
+
+startGps();
+
 
 function dms2dec(lat, latRef, lon, lonRef) {
     var ref = { 'N': 1, 'E': 1, 'S': -1, 'W': -1 };
@@ -52,7 +67,7 @@ function dms2dec(lat, latRef, lon, lonRef) {
     lon = (lon[0] + (lon[1] / 60) + (lon[2] / 3600)) * ref[lonRef];
 
     return { lat, lon };
-};
+}
 
 function deg2dms(deg, isLat) {
     let dplaces = 2;
