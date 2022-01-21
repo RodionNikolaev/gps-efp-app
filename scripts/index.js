@@ -88,6 +88,8 @@ let full_svg_Angle = null;
 let routeLines = null;
 let prev_point = null;
 
+let last_booth_click = null;
+
 function config(fpSettings) {
 
     settings = fpSettings;
@@ -104,13 +106,12 @@ function config(fpSettings) {
         element: document.querySelector("#floorplan"),
         eventId: "park-pobedy",
         noOverlay: true,
-        onBoothClick: (e) => console.info(`Booth clicked: ${e.target.name}`),
+        onBoothClick: (e) => last_booth_click = e.target.name,
         onFpConfigured: () => {
             document.querySelector(".info").classList.add("ready");
             fp = _fp;
         },
         onDirection: (e) => {
-
             routeLines = e.lines;
             let starded = routeLines?.length;
 
@@ -125,9 +126,8 @@ function config(fpSettings) {
 
     button.addEventListener("click", () => {
         if (!prev_point) return;
-
         let starded = button.classList.contains("started");
-        fp.selectRoute(null, starded ? null : "Hotel");
+        fp.selectRoute(null, starded ? null : last_booth_click || "Hotel");
     })
 }
 
@@ -171,6 +171,12 @@ function updadeCurrentPosition(coords) {
 
     let left_meters = left_pixels * full_gps_distance / full_svg_length;
     let left_km = left_meters ? (round(left_meters / 1000, 2) + " km") : "--";
+
+    if (left_meters > 0 && left_meters <= 15) {
+        alert("Route completed");
+        fp.selectRoute(null, null);
+        return;
+    }
 
     let speed_meters = coords.speed > 0.5 ? coords.speed : 0;
     let speed_km = speed_meters ? (round(speed_meters * 3.6, 1) + " km/h") : "--";
