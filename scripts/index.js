@@ -72,6 +72,10 @@ function round(number, digits = 3) {
     return Math.round(number * Math.pow(10, digits)) / Math.pow(10, digits);
 }
 
+function formatSeconds(seconds) {
+    return new Date(seconds * 1000).toISOString().substr(11, 8);
+}
+
 var fp = null;
 var settings = null;
 
@@ -115,7 +119,7 @@ function updadeCurrentPosition(coords) {
     let lat = coords.latitude;
     let lon = coords.longitude;
 
-    if (!lat || !lon || !fp) {
+    if (!lat || !lon) {
         prev_point = null;
         return;
     }
@@ -129,9 +133,10 @@ function updadeCurrentPosition(coords) {
     let delta_distanсe = point_distance / full_gps_distance; // Соотношение от деления
 
     let location = rotatePoint(delta_bearing, shiftPoint(p0, full_svg_length * delta_distanсe, full_svg_Angle), p0.x, p0.y);
-    fp.selectCurrentPosition(location, !prev_point);
 
-    let left_dist = 0;
+    if (fp) fp.selectCurrentPosition(location, !prev_point);
+
+    let left_pixels = 0;
 
     if (routeLines) {
 
@@ -141,16 +146,21 @@ function updadeCurrentPosition(coords) {
             let line = routeLines[i];
             let len = lineLength(line.p0, line.p1);
 
-            if (!perp || perp.i > i) left_dist += len;
+            if (!perp || perp.i > i) left_pixels += len;
         }
 
-        if (perp) left_dist += lineLength(routeLines[perp.i].p0, perp.p);
+        if (perp) left_pixels += lineLength(routeLines[perp.i].p0, perp.p);
     }
 
-    let speed = coords.speed > 0.5 ? round(coords.speed * 3.6, 1) : "--";
-    let left_perc = round(left_dist * full_gps_distance / full_svg_length / 1000, 2) || "--";
+    let left_meters = left_pixels * full_gps_distance / full_svg_length;
+    let left_km = left_meters ? (round(left_meters / 1000, 2) + " km") : "--";
+
+    let speed_meters = coords.speed;
+    let speed_km = speed_meters ? (round(speed_meters * 3.6, 1) + " km/h") : "--";
+
+    let left_time = left_pixels && speed_meters ? formatSeconds(left_meters / speed_meters) : "--";
 
     document.querySelector(".first").innerHTML = `${deg2dms(lat, true)}<br/>${deg2dms(lon)}`;
-    document.querySelector(".second").innerHTML = `${speed} km/h<br/>${left_perc} km`;
+    document.querySelector(".second").innerHTML = `${speed_km}<br/>${left_time} / ${left_km}`;
     prev_point = location;
 }

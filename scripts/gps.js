@@ -2,19 +2,18 @@ let watcher = null;
 
 function startGps() {
     watcher = navigator.geolocation.watchPosition((pos) => {
-
-        console.info(pos);
         try {
             updadeCurrentPosition(pos.coords);
         }
         catch (e) {
             console.error(e);
         }
-
-
     }, (err) => {
         console.error(err);
-        if (watcher) navigator.geolocation.clearWatch(watcher);
+        if (watcher) {
+            navigator.geolocation.clearWatch(watcher);
+            watcher = null;
+        }
         setTimeout(() => startGps(), 5000);
     }, {
         maximumAge: 0,
