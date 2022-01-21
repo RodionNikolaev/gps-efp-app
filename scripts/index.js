@@ -103,15 +103,32 @@ function config(fpSettings) {
     let _fp = new ExpoFP.FloorPlan({
         element: document.querySelector("#floorplan"),
         eventId: "park-pobedy",
-        noOverlay: false,
+        noOverlay: true,
+        onBoothClick: (e) => console.info(`Booth clicked: ${e.target.name}`),
         onFpConfigured: () => {
             document.querySelector(".info").classList.add("ready");
             fp = _fp;
         },
         onDirection: (e) => {
+
             routeLines = e.lines;
+            let starded = routeLines?.length;
+
+            if (starded) button.classList.add("started");
+            else button.classList.remove("started");
+
+            button.innerHTML = starded ? "Stop" : "Start";
         }
     });
+
+    let button = document.querySelector(".button");
+
+    button.addEventListener("click", () => {
+        if (!prev_point) return;
+
+        let starded = button.classList.contains("started");
+        fp.selectRoute(null, starded ? null : "Hotel");
+    })
 }
 
 function updadeCurrentPosition(coords) {
@@ -119,7 +136,7 @@ function updadeCurrentPosition(coords) {
     let lat = coords.latitude;
     let lon = coords.longitude;
 
-    if (!lat || !lon) {
+    if (!lat || !lon || !settings) {
         prev_point = null;
         return;
     }
