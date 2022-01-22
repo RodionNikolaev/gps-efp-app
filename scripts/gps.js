@@ -22,9 +22,6 @@ function startGps() {
     })
 }
 
-startGps();
-
-
 function dms2dec(lat, latRef, lon, lonRef) {
     var ref = { 'N': 1, 'E': 1, 'S': -1, 'W': -1 };
     var sep = [' ,', ' ', ','];
@@ -109,3 +106,6 @@ function bearing(lat1, lon1, lat2, lon2) {
     const brng = (θ * 180 / Math.PI + 360) % 360; // in degrees
     return brng;
 }
+
+
+startGps();
