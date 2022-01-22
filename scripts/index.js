@@ -59,11 +59,11 @@ function config(fpSettings) {
 
 function updadeCurrentPosition(coords) {
 
-    coords = {
-        latitude: 59.871655,
-        longitude: 30.316757,
-        speed: 2
-    }
+    // coords = {
+    //     latitude: 59.871655,
+    //     longitude: 30.316757,
+    //     speed: 2
+    // }
 
     let lat = coords.latitude;
     let lon = coords.longitude;
