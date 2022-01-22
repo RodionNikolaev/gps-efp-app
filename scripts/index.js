@@ -41,8 +41,13 @@ function config(fpSettings) {
             routeLines = e.lines;
             let starded = routeLines?.length;
 
-            if (starded) button.classList.add("started");
-            else button.classList.remove("started");
+            if (starded) {
+                button.classList.add("started");
+            }
+            else {
+                document.querySelector(".turns").classList.remove("visible");
+                button.classList.remove("started");
+            }
 
             button.innerHTML = starded ? "Stop" : "Start";
         }
@@ -53,17 +58,11 @@ function config(fpSettings) {
     button.addEventListener("click", () => {
         if (!prevPoint) return;
         let starded = button.classList.contains("started");
-        fp.selectRoute("PHARMACY", starded ? null : lastBoothClick || "Hotel");
+        fp.selectRoute(null, starded ? null : lastBoothClick || "Hotel");
     })
 }
 
 function updadeCurrentPosition(coords) {
-
-    // coords = {
-    //     latitude: 59.871655,
-    //     longitude: 30.316757,
-    //     speed: 2
-    // }
 
     let lat = coords.latitude;
     let lon = coords.longitude;
@@ -101,7 +100,16 @@ function updadeCurrentPosition(coords) {
 
             let currAngle = lineAngle(routeLines[perp.i].p1, routeLines[perp.i].p0);
             let nextAngle = lineAngle(routeLines[perp.i - 1].p1, routeLines[perp.i - 1].p0);
-            let distToTurn = pixelsToMeters(part);
+
+            let distToTurn = round(pixelsToMeters(part), 0);
+            let direction = getDirection(routeLines[perp.i].p1, routeLines[perp.i].p0, routeLines[perp.i - 1].p0);
+
+            if (distToTurn <= 100) {
+                document.querySelector(".turns").classList.add("visible");
+                document.querySelector(".turns").innerHTML = direction > 0 ? ` ${distToTurn}m 🡆` : ` 🡄 ${distToTurn}m `;
+            }
+            else
+                document.querySelector(".turns").classList.remove("visible");
 
             leftPixels += part;
         }
@@ -119,7 +127,7 @@ function updadeCurrentPosition(coords) {
     let speedMeters = coords.speed > 0.5 ? coords.speed : 0;
     let speedKm = speedMeters ? (round(speedMeters * 3.6, 1) + " km/h") : "--";
 
-    let leftTime = leftPixels && speedMeters ? new Date(leftMeters / speedMeters * 1000).toISOString().substr(11, 8).replace(/^00:/,"") : "--";
+    let leftTime = leftPixels && speedMeters ? new Date(leftMeters / speedMeters * 1000).toISOString().substr(11, 8).replace(/^00:/, "") : "--";
 
     document.querySelector(".first").innerHTML = `${deg2dms(lat, true)}<br/>${deg2dms(lon)}`;
     document.querySelector(".second").innerHTML = `${speedKm}<br/>${leftTime} / ${leftKm}`;

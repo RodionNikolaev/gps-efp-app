@@ -36,6 +36,7 @@ body {
     text-align: right;
   }
 }
+
 .button {
   position: absolute;
   border: 0;
@@ -71,5 +72,23 @@ body {
     50% {
       opacity: 0;
     }
+  }
+}
+
+.turns {
+  position: absolute;
+  background: #41b6e7;
+  bottom: 60px;
+  font-size: 24px;
+  padding: 8px;
+  margin: 0;
+  left: 6px;
+  color: white;
+  height: 35px;
+  display: none;
+  border-radius: 5px;
+
+  &.visible {
+    display: unset;
   }
 }
