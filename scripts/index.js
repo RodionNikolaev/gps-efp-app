@@ -12,12 +12,13 @@ let prevPoint = null;
 
 let lastBoothClick = null;
 
+let routeFrom = null;//"PHARMACY";
+
 function pixelsToMeters(pixels) {
     return pixels * fullGpsDistance / fullSvgLength;
 }
 
 function config(fpSettings) {
-
     settings = fpSettings;
 
     let { p0, p1 } = fpSettings;
@@ -58,11 +59,17 @@ function config(fpSettings) {
     button.addEventListener("click", () => {
         if (!prevPoint) return;
         let starded = button.classList.contains("started");
-        fp.selectRoute(null, starded ? null : lastBoothClick || "Hotel");
+        fp.selectRoute(routeFrom, starded ? null : lastBoothClick || "Hotel");
     })
 }
 
 function updadeCurrentPosition(coords) {
+
+    // coords = {
+    //     latitude: 59.864737,
+    //     longitude: 30.315962,
+    //     speed: 2
+    // };
 
     let lat = coords.latitude;
     let lon = coords.longitude;
@@ -104,12 +111,10 @@ function updadeCurrentPosition(coords) {
             let distToTurn = round(pixelsToMeters(part), 0);
             let direction = getDirection(routeLines[perp.i].p1, routeLines[perp.i].p0, routeLines[perp.i - 1].p0);
 
-            if (distToTurn <= 100) {
+            if (distToTurn) {
                 document.querySelector(".turns").classList.add("visible");
                 document.querySelector(".turns").innerHTML = direction > 0 ? ` ${distToTurn}m 🡆` : ` 🡄 ${distToTurn}m `;
-            }
-            else
-                document.querySelector(".turns").classList.remove("visible");
+            } else document.querySelector(".turns").classList.remove("visible");
 
             leftPixels += part;
         }
