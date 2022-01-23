@@ -12,7 +12,7 @@ let prevPoint = null;
 
 let lastBoothClick = null;
 
-let routeFrom = null;//"PHARMACY";
+let routeFrom = null;
 
 function pixelsToMeters(pixels) {
     return pixels * fullGpsDistance / fullSvgLength;
@@ -103,27 +103,32 @@ function updadeCurrentPosition(coords) {
         }
 
         if (perp) {
-            let part = lineLength(routeLines[perp.i].p0, perp.p);
 
-            let currAngle = lineAngle(routeLines[perp.i].p1, routeLines[perp.i].p0);
-            let nextAngle = lineAngle(routeLines[perp.i - 1].p1, routeLines[perp.i - 1].p0);
+            let currentLine = routeLines[perp.i];
+            let nextLine = routeLines[perp.i - 1];
 
-            let distToTurn = round(pixelsToMeters(part), 0);
-            let direction = getDirection(routeLines[perp.i].p1, routeLines[perp.i].p0, routeLines[perp.i - 1].p0);
+            // let currAngle = lineAngle(currentLine.p1, currentLine.p0);
+            // let nextAngle = lineAngle(nextLine.p1, nextLine.p0);
 
-            if (distToTurn) {
+            let distToTurnPixels = lineLength(currentLine.p0, perp.p);
+            leftPixels += distToTurnPixels;
+
+            if (nextLine) {
+
+                let distToTurnMeters = round(pixelsToMeters(distToTurnPixels), 0);
+
+                let turnDirection = getDirection(routeLines[perp.i].p1, routeLines[perp.i].p0, nextLine.p0); // Clockwise, Counterclockwise
+
                 document.querySelector(".turns").classList.add("visible");
-                document.querySelector(".turns").innerHTML = direction > 0 ? ` ${distToTurn}m 🡆` : ` 🡄 ${distToTurn}m `;
+                document.querySelector(".turns").innerHTML = turnDirection > 0 ? ` ${distToTurnMeters}m 🡆` : ` 🡄 ${distToTurnMeters}m `;
             } else document.querySelector(".turns").classList.remove("visible");
-
-            leftPixels += part;
         }
     }
 
     let leftMeters = pixelsToMeters(leftPixels);
     let leftKm = leftMeters ? (round(leftMeters / 1000, 2) + " km") : "--";
 
-    if (leftMeters > 0 && leftMeters <= 15) {
+    if (leftMeters > 0 && leftMeters <= 20) {
         alert("Route completed");
         fp.selectRoute(null, null);
         return;
