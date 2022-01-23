@@ -1,5 +1,5 @@
 var fp = null;
-var settings = null;
+var config = null;
 
 let fullGpsDistance = null;
 let fullGpsBearing = null;
@@ -18,10 +18,10 @@ function pixelsToMeters(pixels) {
     return pixels * fullGpsDistance / fullSvgLength;
 }
 
-function config(fpSettings) {
-    settings = fpSettings;
+function config(fpConfig) {
+    config = fpConfig;
 
-    let { p0, p1 } = fpSettings;
+    let { p0, p1 } = fpConfig;
 
     fullGpsDistance = distance(p0.lat, p0.lon, p1.lat, p1.lon);
     fullGpsBearing = bearing(p0.lat, p0.lon, p1.lat, p1.lon);
@@ -74,12 +74,12 @@ function updadeCurrentPosition(coords) {
     let lat = coords.latitude;
     let lon = coords.longitude;
 
-    if (!lat || !lon || !settings) {
+    if (!lat || !lon || !config) {
         prevPoint = null;
         return;
     }
 
-    let { p0 } = settings;
+    let { p0 } = config;
 
     let pointDistance = distance(p0.lat, p0.lon, lat, lon);
     let pointBearing = bearing(p0.lat, p0.lon, lat, lon);

@@ -51,13 +51,13 @@
       crossorigin="anonymous"
     ></script>
     <script>
-      const fpSettings = {
+      const fpConfig = {
         p0: { lat: 59.864714, lon: 30.314072, x: 70, y: 12 },
         p1: { lat: 59.871935, lon: 30.336582, x: 604, y: 905 }
       };
 
       try {
-        window.setTimeout(() => config(fpSettings), 3000);
+        window.setTimeout(() => config(fpConfig), 3000);
       } catch (e) {
         console.error(e);
       }
