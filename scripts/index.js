@@ -18,7 +18,7 @@ function pixelsToMeters(pixels) {
     return pixels * fullGpsDistance / fullSvgLength;
 }
 
-function config(conf) {
+function config(conf, eventId) {
     
     fpConfig = conf;
 
@@ -32,7 +32,7 @@ function config(conf) {
 
     let _fp = new ExpoFP.FloorPlan({
         element: document.querySelector("#floorplan"),
-        eventId: "park-pobedy",
+        eventId,
         noOverlay: true,
         onBoothClick: (e) => lastBoothClick = e.target.name,
         onFpConfigured: () => {

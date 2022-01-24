@@ -134,5 +134,3 @@ function startGps() {
         timeout: 10000
     })
 }
-
-startGps();

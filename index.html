@@ -58,8 +58,9 @@
       };
 
       try {
+        startGps();
         // config method in 'scripts/index.js' file
-        window.setTimeout(() => config(fpConf), 3000);
+        window.setTimeout(() => config(fpConf, "park-pobedy"), 3000);
       } catch (e) {
         console.error(e);
       }
