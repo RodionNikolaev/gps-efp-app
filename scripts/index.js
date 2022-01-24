@@ -130,8 +130,8 @@ function updadeCurrentPosition(coords) {
     let leftKm = leftMeters ? (round(leftMeters / 1000, 2) + " km") : "--";
 
     if (leftMeters > 0 && leftMeters <= 20) {
-        alert("Route completed");
         fp.selectRoute(null, null);
+        alert("Route completed");        
         return;
     }
 
