@@ -1,3 +1,5 @@
+// Math calculations wits point ans line entities
+
 function rotatePoint(angle, point, cX, cY) {
     let radians = angle / (180 / Math.PI);
     return {

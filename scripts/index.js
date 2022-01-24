@@ -2,7 +2,7 @@ var fp = null;
 var fpConfig = null;
 
 let fullGpsDistance = null;
-let fullGpsBearing = null;
+let globalGpsBearing = null;
 
 let fullSvgLength = null;
 let fullSvgAngle = null;
@@ -25,7 +25,7 @@ function config(conf) {
     let { p0, p1 } = conf;
 
     fullGpsDistance = distance(p0.lat, p0.lon, p1.lat, p1.lon);
-    fullGpsBearing = bearing(p0.lat, p0.lon, p1.lat, p1.lon);
+    globalGpsBearing = bearing(p0.lat, p0.lon, p1.lat, p1.lon);
 
     fullSvgLength = lineLength(p0, p1);
     fullSvgAngle = lineAngle(p0, p1);
@@ -64,6 +64,9 @@ function config(conf) {
     })
 }
 
+/**
+ * @param  {Object} Current location point coordinations
+ */
 function updadeCurrentPosition(coords) {
 
     // coords = {
@@ -72,22 +75,26 @@ function updadeCurrentPosition(coords) {
     //     speed: 2
     // };
 
-    let lat = coords.latitude;
-    let lon = coords.longitude;
+    let currLat = coords.latitude;
+    let currLon = coords.longitude;
 
-    if (!lat || !lon || !fpConfig) {
+    if (!currLat || !currLon || !fpConfig) {
         prevPoint = null;
         return;
     }
 
     let { p0 } = fpConfig;
 
-    let pointDistance = distance(p0.lat, p0.lon, lat, lon);
-    let pointBearing = bearing(p0.lat, p0.lon, lat, lon);
+    // Distance between top left point of plan and current point
+    let pointDistance = distance(p0.lat, p0.lon, currLat, currLon);
 
-    let deltaDegrees = pointBearing - fullGpsBearing;
+    // Angle between North and top left point of plan and current point 
+    let pointBearing = bearing(p0.lat, p0.lon, currLat, currLon);
+
+    let deltaDegrees = pointBearing - globalGpsBearing;
     let deltaDistanсe = pointDistance / fullGpsDistance;
 
+    // Current point position in SVG coordinates.
     let locationPixel = rotatePoint(deltaDegrees, shiftPoint(p0, fullSvgLength * deltaDistanсe, fullSvgAngle), p0.x, p0.y);
 
     if (fp) fp.selectCurrentPosition(locationPixel, !prevPoint);
@@ -140,7 +147,7 @@ function updadeCurrentPosition(coords) {
 
     let leftTime = leftPixels && speedMeters ? new Date(leftMeters / speedMeters * 1000).toISOString().substr(11, 8).replace(/^00:/, "") : "--";
 
-    document.querySelector(".first").innerHTML = `${deg2dms(lat, true)}<br/>${deg2dms(lon)}`;
+    document.querySelector(".first").innerHTML = `${deg2dms(currLat, true)}<br/>${deg2dms(currLon)}`;
     document.querySelector(".second").innerHTML = `${speedKm}<br/>${leftTime} / ${leftKm}`;
     prevPoint = locationPixel;
 }
