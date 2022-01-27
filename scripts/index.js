@@ -19,7 +19,7 @@ function pixelsToMeters(pixels) {
 }
 
 function config(conf, eventId) {
-    
+
     fpConfig = conf;
 
     let { p0, p1 } = conf;
@@ -33,35 +33,15 @@ function config(conf, eventId) {
     let _fp = new ExpoFP.FloorPlan({
         element: document.querySelector("#floorplan"),
         eventId,
-        noOverlay: true,
+        noOverlay: false,
         onBoothClick: (e) => lastBoothClick = e.target.name,
         onFpConfigured: () => {
-            document.querySelector(".info").classList.add("ready");
             fp = _fp;
         },
         onDirection: (e) => {
             routeLines = e.lines;
-            let starded = routeLines?.length;
-
-            if (starded) {
-                button.classList.add("started");
-            }
-            else {
-                document.querySelector(".turns").classList.remove("visible");
-                button.classList.remove("started");
-            }
-
-            button.innerHTML = starded ? "Stop" : "Start";
         }
     });
-
-    let button = document.querySelector(".button");
-
-    button.addEventListener("click", () => {
-        if (!prevPoint) return;
-        let starded = button.classList.contains("started");
-        fp.selectRoute(routeFrom, starded ? null : lastBoothClick || "Hotel");
-    })
 }
 
 /**
@@ -69,11 +49,7 @@ function config(conf, eventId) {
  */
 function updadeCurrentPosition(coords) {
 
-    // coords = {
-    //     latitude: 59.864737,
-    //     longitude: 30.315962,
-    //     speed: 2
-    // };
+    coords = fpConfig.testP || coords;
 
     let currLat = coords.latitude;
     let currLon = coords.longitude;
@@ -122,14 +98,9 @@ function updadeCurrentPosition(coords) {
             leftPixels += distToTurnPixels;
 
             if (nextLine) {
-
                 let distToTurnMeters = round(pixelsToMeters(distToTurnPixels), 0);
-
-                let turnDirection = getDirection(routeLines[perp.i].p1, routeLines[perp.i].p0, nextLine.p0); // Clockwise, Counterclockwise
-
-                document.querySelector(".turns").classList.add("visible");
-                document.querySelector(".turns").innerHTML = turnDirection > 0 ? ` ${distToTurnMeters}m 🡆` : ` 🡄 ${distToTurnMeters}m `;
-            } else document.querySelector(".turns").classList.remove("visible");
+                let turnDirection = getDirection(routeLines[perp.i].p1, routeLines[perp.i].p0, nextLine.p0); // Clockwise, Counterclockwise                
+            }
         }
     }
 
@@ -138,7 +109,7 @@ function updadeCurrentPosition(coords) {
 
     if (leftMeters > 0 && leftMeters <= 20) {
         fp.selectRoute(null, null);
-        alert("Route completed");        
+        alert("Route completed");
         return;
     }
 
@@ -147,7 +118,5 @@ function updadeCurrentPosition(coords) {
 
     let leftTime = leftPixels && speedMeters ? new Date(leftMeters / speedMeters * 1000).toISOString().substr(11, 8).replace(/^00:/, "") : "--";
 
-    document.querySelector(".first").innerHTML = `${deg2dms(currLat, true)}<br/>${deg2dms(currLon)}`;
-    document.querySelector(".second").innerHTML = `${speedKm}<br/>${leftTime} / ${leftKm}`;
     prevPoint = locationPixel;
 }
