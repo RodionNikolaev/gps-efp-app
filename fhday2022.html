@@ -11,11 +11,8 @@
     <script src="scripts/index.js" type="text/javascript"></script>
   </head>
   <body>
-    <div  data-event-id="fhday2022" id="floorplan"></div>
-    <script
-      src="https://wayfinding.expofp.com/packages/master/expofp.js"
-      crossorigin="anonymous"
-    ></script>
+    <div data-event-id="fhday2022" id="floorplan"></div>
+    <script src="https://wayfinding.expofp.com/packages/master/expofp.js"></script>
     <script>
       const fpConf = {
         p0: {
@@ -38,7 +35,7 @@
       };
 
       try {
-        startGps();       
+        startGps();
         config(fpConf);
       } catch (e) {
         console.error(e);

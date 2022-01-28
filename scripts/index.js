@@ -10,10 +10,6 @@ let fullSvgAngle = null;
 let routeLines = null;
 let prevPoint = null;
 
-let lastBoothClick = null;
-
-let routeFrom = null;
-
 function pixelsToMeters(pixels) {
     return pixels * fullGpsDistance / fullSvgLength;
 }
@@ -31,20 +27,15 @@ function config(conf) {
     fullSvgAngle = lineAngle(p0, p1);
 
     let _fp = new ExpoFP.FloorPlan({
-        element: document.querySelector("#floorplan"),        
+        element: document.querySelector("[data-event-id]"),
         noOverlay: false,
-        onBoothClick: (e) => lastBoothClick = e.target.name,
-        onFpConfigured: () => {
-            fp = _fp;
-        },
-        onDirection: (e) => {
-            routeLines = e.lines;
-        }
+        onFpConfigured: () => fp = _fp,
+        onDirection: (e) => routeLines = e.lines
     });
 }
 
 /**
- * @param  {Object} Current location point coordinations
+ * @param  {Object} Current  point GPS coordinats
  */
 function updadeCurrentPosition(coords) {
 
