@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width"
+    />
+    <link rel="shortcut icon" href="favicon.png" />
+    <script src="scripts/gps.js" type="text/javascript"></script>
+    <script src="scripts/math.js" type="text/javascript"></script>
+    <script src="scripts/index.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <div  data-event-id="fhday2022" id="floorplan"></div>
+    <script
+      src="https://wayfinding.expofp.com/packages/master/expofp.js"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const fpConf = {
+        p0: {
+          lat: 33.61035763270858,
+          lon: -111.72558998096989,
+          x: 17884,
+          y: 34126
+        },
+        p1: {
+          lat: 33.60100542389497,
+          lon: -111.70872682943148,
+          x: 78379,
+          y: 47457
+        },
+        testP: {
+          latitude: 33.60428823887073,
+          longitude: -111.71846805741701,
+          speed: 2
+        }
+      };
+
+      try {
+        startGps();       
+        config(fpConf);
+      } catch (e) {
+        console.error(e);
+      }
+    </script>
+  </body>
+</html>

@@ -11,36 +11,35 @@
     <script src="scripts/index.js" type="text/javascript"></script>
   </head>
   <body>
-    <div id="floorplan"></div>
+    <div data-event-id="entreprenadliveskane" id="floorplan"></div>
     <script
-      src="https://wayfinding.expofp.com/packages/features/wayfinding/expofp.js"
+      src="https://wayfinding.expofp.com/packages/master/expofp.js"
       crossorigin="anonymous"
     ></script>
     <script>
       const fpConf = {
         p0: {
-          lat: 33.61035763270858,
-          lon: -111.72558998096989,
-          x: 17884,
-          y: 34126
+          lat: 55.99320784354992, 
+          lon: 13.109172027159351,
+          x: 5290,
+          y: 5001
         },
         p1: {
-          lat: 33.60100542389497,
-          lon: -111.70872682943148,
-          x: 78379,
-          y: 47457
+          lat: 55.98538971157886,
+          lon: 13.120635601631307,
+          x: 17111,
+          y: 9842
         },
         testP: {
-          latitude: 33.60428823887073,
-          longitude: -111.71846805741701,
+          latitude: 55.99011474168899, 
+          longitude: 13.112398875339332,
           speed: 2
         }
       };
 
       try {
         startGps();
-        // config method in 'scripts/index.js' file
-        window.setTimeout(() => config(fpConf, "fhday2022"), 3000);
+        config(fpConf);
       } catch (e) {
         console.error(e);
       }

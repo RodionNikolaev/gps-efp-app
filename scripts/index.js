@@ -18,7 +18,7 @@ function pixelsToMeters(pixels) {
     return pixels * fullGpsDistance / fullSvgLength;
 }
 
-function config(conf, eventId) {
+function config(conf) {
 
     fpConfig = conf;
 
@@ -31,8 +31,7 @@ function config(conf, eventId) {
     fullSvgAngle = lineAngle(p0, p1);
 
     let _fp = new ExpoFP.FloorPlan({
-        element: document.querySelector("#floorplan"),
-        eventId,
+        element: document.querySelector("#floorplan"),        
         noOverlay: false,
         onBoothClick: (e) => lastBoothClick = e.target.name,
         onFpConfigured: () => {
