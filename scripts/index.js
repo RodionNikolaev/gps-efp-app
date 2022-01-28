@@ -12,14 +12,14 @@ let prevPoint = null;
 
 let lastBoothClick = null;
 
-let routeFrom = null;
+let routeFrom = "HOME";
 
 function pixelsToMeters(pixels) {
     return pixels * fullGpsDistance / fullSvgLength;
 }
 
 function config(conf, eventId) {
-    
+
     fpConfig = conf;
 
     let { p0, p1 } = conf;
@@ -60,7 +60,7 @@ function config(conf, eventId) {
     button.addEventListener("click", () => {
         if (!prevPoint) return;
         let starded = button.classList.contains("started");
-        fp.selectRoute(routeFrom, starded ? null : lastBoothClick || "Hotel");
+        fp.selectRoute(starded ? null : "HOME", starded ? null : "CRESTHILL PARK");
     })
 }
 
@@ -72,6 +72,12 @@ function updadeCurrentPosition(coords) {
     // coords = {
     //     latitude: 59.864737,
     //     longitude: 30.315962,
+    //     speed: 2
+    // };
+
+    // coords = {
+    //     latitude: 40.94700039455145,
+    //     longitude: -74.11625139436377,
     //     speed: 2
     // };
 
@@ -138,7 +144,7 @@ function updadeCurrentPosition(coords) {
 
     if (leftMeters > 0 && leftMeters <= 20) {
         fp.selectRoute(null, null);
-        alert("Route completed");        
+        alert("Route completed");
         return;
     }
 
