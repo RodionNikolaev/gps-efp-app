@@ -1,4 +1,4 @@
-# GPS integration  with ExpoFP plans.
+# How to integrate GPS with ExpoFP plans
 ExpoFP API does not have a built-in GPS functionality. 
 But, you can create this functionality over ***selectCurrentPosition()*** method.
 
@@ -6,11 +6,7 @@ But, you can create this functionality over ***selectCurrentPosition()*** method
 
 ![Config](https://user-images.githubusercontent.com/10497662/150785599-5b7a06cf-03cd-4247-bdda-62b871748976.png)
 
-It is required to define two points ***p0*** and ***p1*** to make GPS work. 
-It is necessary to specify the coordinates for both points inside the Designer coordinates {x and y}.
-The point ***p0*** must be located in the upper left corner, the point ***p1*** in the lower right corner
-(better to place the points as far apart as possible, but not obligatory at the plan corners).
-Also it is needed to specify the coordinates ***{lat, lon}*** corresponding with the projections of points inside the Designer to the real GPS coordinates.
+To make GPS work, the system needs two points (p0 and p1) to be set manually inside the Designer coordinates {x and y}, and two points with real GPS coordinates - {lat, lon} - to be set manually to correspond with p0 and p1. The point p0 must be located in the upper left corner, the point p1 in the lower right corner (it is better to place the points as far from each other as possible, but not obligatory at the plan corners).
 
 ```js
   const fpConf = {
@@ -33,7 +29,7 @@ Also it is needed to specify the coordinates ***{lat, lon}*** corresponding with
       };
  ```
 ## Map loading
-You can check the any .html file in this repo to explore a full structure.
+You can check any .html file in this repo to explore a full structure.
 
 ### Step 1.
 Create container div element and set the name of your expo
