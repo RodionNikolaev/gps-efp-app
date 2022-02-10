@@ -122,7 +122,7 @@ function startGps() {
             console.error(e);
         }
     }, (err) => {
-        console.error(err);
+       //console.error(err);
         if (watcher) {
             navigator.geolocation.clearWatch(watcher);
             watcher = null;

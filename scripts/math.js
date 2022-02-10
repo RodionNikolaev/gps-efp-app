@@ -73,3 +73,7 @@ function shortestrPerp(point, lines) {
 function round(number, digits = 3) {
     return Math.round(number * Math.pow(10, digits)) / Math.pow(10, digits);
 }
+
+function lineCenter(p1, p2) {
+    return { x: p1.x + p2.x / 2, y: p1.y + p2.y / 2 };
+}

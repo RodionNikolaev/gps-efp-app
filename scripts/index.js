@@ -63,6 +63,15 @@ function updadeCurrentPosition(coords) {
     // Current point position in SVG coordinates.
     let locationPixel = rotatePoint(deltaDegrees, shiftPoint(p0, fullSvgLength * deltaDistanсe, fullSvgAngle), p0.x, p0.y);
 
+
+    let distToCenter = lineLength(locationPixel, lineCenter(fpConfig.p0, fpConfig.p1));
+    let diagonale = lineLength(fpConfig.p0, fpConfig.p1);
+
+    if (distToCenter > 5 * diagonale) {
+        console.info("Current position too far");
+        return;
+    }
+
     if (fp) fp.selectCurrentPosition(locationPixel, !prevPoint);
 
     let leftPixels = 0;
