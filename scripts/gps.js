@@ -134,3 +134,6 @@ function startGps() {
         timeout: 10000
     })
 }
+
+//new_latitude  = latitude  + (dy / r_earth) * (180 / pi);
+//new_longitude = longitude + (dx / r_earth) * (180 / pi) / cos(latitude * pi/180);
